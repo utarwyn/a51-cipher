@@ -14,34 +14,35 @@ public class CryptoA51 {
     private static final byte[] YREG_TAPS = {21, 20};
     private static final byte[] ZREG_TAPS = {22, 21, 20, 7};
 
-    public CryptoA51() {
+    private CryptoA51() {
         this.frameCounter = new BitSet[22];
         this.key = this.bytesToBitSets(new byte[]{0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1});
         this.frameCounter = this.bytesToBitSets(new byte[]{0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0});
         this.init();
         this.generateKeyStream();
-        String crypt = this.cryptFlux(this.stringToBinary("Ceci est un test"));
-        System.out.println(this.stringToBinary("Ceci est un test"));
-        System.out.println((crypt));
-        System.out.println((this.cryptFlux(crypt)));
+
+        String binary = this.stringToBinary("Ceci est un test éà!!!??");
+        String crypt = this.cryptFlux(binary);
+        System.out.println(this.binaryToString(crypt));
+        System.out.println(this.binaryToString(this.cryptFlux(crypt)));
     }
 
     public String stringToBinary(String message) {
-        String result = "";
-        for (byte b : message.getBytes(StandardCharsets.UTF_8)) {
-            result += Integer.toBinaryString(b);
+        StringBuilder result = new StringBuilder();
+        for (char c : message.toCharArray()) {
+            result.append(String.format("%8s", Integer.toBinaryString(c)).replace(' ', '0'));
         }
-        return result;
+        return result.toString();
     }
 
     public String binaryToString(String binary) {
-        String result = "";
-        for (int i = 0; i < binary.length() - 8; i += 8) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < binary.length(); i += 8) {
             String temp = binary.substring(i, i + 8);
             int number = Integer.parseInt(temp, 2);
-            result += (char) number;
+            result.append((char) number);
         }
-        return result;
+        return result.toString();
     }
 
     public void init() {

@@ -16,4 +16,4 @@ compile:
 	javac -d ./$(BIN) @$(BIN)/$(SRC_FILE) $(JAVA_ARGS)
 
 run:
-	java -classpath ./bin $(MAIN)
+	java -classpath ./$(BIN) $(MAIN) ${ARGS}
