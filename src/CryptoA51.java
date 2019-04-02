@@ -20,9 +20,28 @@ public class CryptoA51 {
         this.frameCounter = this.bytesToBitSets(new byte[]{0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0});
         this.init();
         this.generateKeyStream();
-        String crypt = this.crypt("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.");
-        System.out.println(crypt);
-        System.out.println(this.crypt(crypt));
+        String crypt = this.cryptFlux(this.stringToBinary("Ceci est un test"));
+        System.out.println(this.stringToBinary("Ceci est un test"));
+        System.out.println((crypt));
+        System.out.println((this.cryptFlux(crypt)));
+    }
+
+    public String stringToBinary(String message) {
+        String result = "";
+        for (byte b : message.getBytes(StandardCharsets.UTF_8)) {
+            result += Integer.toBinaryString(b);
+        }
+        return result;
+    }
+
+    public String binaryToString(String binary) {
+        String result = "";
+        for (int i = 0; i < binary.length() - 8; i += 8) {
+            String temp = binary.substring(i, i + 8);
+            int number = Integer.parseInt(temp, 2);
+            result += (char) number;
+        }
+        return result;
     }
 
     public void init() {
@@ -145,11 +164,11 @@ public class CryptoA51 {
     }
 
     public String crypt(String message) {
-        byte[] bytes          = message.getBytes(StandardCharsets.UTF_8);
+        byte[] bytes = message.getBytes(StandardCharsets.UTF_8);
         byte[] encryptMessage = new byte[bytes.length];
-        int    keyStreamIndex = 0;
+        int keyStreamIndex = 0;
         for (int i = 0; i < bytes.length; i++) {
-            byte   value  = (byte) (bytes[i] ^ (this.keyStream[keyStreamIndex].get(0) ? (byte) 1 : (byte) 0));
+            byte value = (byte) (bytes[i] ^ (this.keyStream[keyStreamIndex].get(0) ? (byte) 1 : (byte) 0));
             encryptMessage[i] = value;
             keyStreamIndex++;
             if (keyStreamIndex == this.keyStream.length) {
@@ -159,6 +178,15 @@ public class CryptoA51 {
         return new String(encryptMessage);
     }
 
+    public String cryptFlux(String flux) {
+        String crypt = "";
+
+        char[] fluxBitChar = flux.toCharArray();
+        for (int i = 0; i < fluxBitChar.length; i++) {
+            crypt += Integer.parseInt(String.valueOf(fluxBitChar[i])) ^ (this.keyStream[i % 228].get(0) ? 1 : 0);
+        }
+        return crypt;
+    }
 
     public void printReg(BitSet[] reg) {
         for (BitSet bitSet : reg) {
