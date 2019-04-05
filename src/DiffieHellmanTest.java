@@ -1,4 +1,7 @@
-public class Main {
+import object.Person;
+import util.PrimeUtil;
+
+public class DiffieHellmanTest {
 
     public static void main(String[] args) {
         int p = PrimeUtil.generateRandomPrimeNumber();

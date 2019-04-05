@@ -1,5 +1,8 @@
-public class Person {
+package object;
 
+import util.PrimeUtil;
+
+public class Person {
 
     private int privateKey;
     private int publicKey;
@@ -13,20 +16,20 @@ public class Person {
         this.privateKey = PrimeUtil.generateRandomNumber();
     }
 
-    public void generatePublicKey() {
-        this.publicKey = (int) Math.pow(this.g, this.privateKey) % this.p;
-    }
-
-    public void computerSymetricKey(int otherPersonPublicKey) {
-        this.symmetricKey = (int) Math.pow(otherPersonPublicKey, this.privateKey) % this.p;
-    }
-
     public int getSymetricKey() {
         return this.symmetricKey;
     }
 
     public int getPublicKey() {
         return publicKey;
+    }
+
+    public void generatePublicKey() {
+        this.publicKey = (int) Math.pow(this.g, this.privateKey) % this.p;
+    }
+
+    public void computerSymetricKey(int otherPersonPublicKey) {
+        this.symmetricKey = (int) Math.pow(otherPersonPublicKey, this.privateKey) % this.p;
     }
 
 }

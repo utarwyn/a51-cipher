@@ -16,14 +16,6 @@ public class BinaryUtil {
 		return bitSet;
 	}
 
-	public static byte[] bitSetsToBytes(BitSet[] bitSets) {
-		byte[] bytes = new byte[bitSets.length];
-		for (int i = 0; i < bitSets.length; i++) {
-			bytes[i] = (byte) (bitSets[i].get(0) ? 1 : 0);
-		}
-		return bytes;
-	}
-
 	public static BitSet getBitSet(boolean value) {
 		BitSet bitSet = new BitSet(1);
 		bitSet.set(0, value);

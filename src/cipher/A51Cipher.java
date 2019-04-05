@@ -1,11 +1,10 @@
 package cipher;
 
 import file.FileHandler;
-import file.StreamMode;
 import util.BinaryUtil;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.NoSuchFileException;
 
 public class A51Cipher extends StreamCipher {
 
@@ -14,36 +13,39 @@ public class A51Cipher extends StreamCipher {
 	}
 
 	@Override
-	public String crypt(String message) {
-		StringBuilder crypt = new StringBuilder();
-
+	public String encrypt(String message) {
+		StringBuilder encrypted = new StringBuilder();
 		char[] fluxBitChar = message.toCharArray();
+
 		for (int i = 0; i < fluxBitChar.length; i++) {
-			crypt.append(Integer.parseInt(String.valueOf(fluxBitChar[i]))
+			encrypted.append(Integer.parseInt(String.valueOf(fluxBitChar[i]))
 							^ (this.keyStream.getKeyAt(i % 228).get(0) ? 1 : 0));
 		}
-		return crypt.toString();
+
+		return encrypted.toString();
 	}
 
 	@Override
-	public void crypt(FileHandler inputFile, FileHandler outputFile) {
+	public void encrypt(FileHandler inputFile, FileHandler outputFile) {
 		try {
-			inputFile.open(StreamMode.INPUT);
-			outputFile.open(StreamMode.OUTPUT);
+			if (inputFile.exists()) {
+				outputFile.openOutputStream();
 
-			String buffer = new String(inputFile.readAllBytes());
-			buffer = BinaryUtil.stringToBinary(buffer);
+				// Read the input file and transform it to binary data
+				String buffer = new String(inputFile.readAllBytes());
+				buffer = BinaryUtil.stringToBinary(buffer);
 
-			String encrypted = BinaryUtil.binaryToString(this.crypt(buffer));
-			byte[] bytes = encrypted.getBytes();
-
-			outputFile.writeBytes(bytes);
+				// Encrypt the data and write it in the output file
+				String encrypted = BinaryUtil.binaryToString(this.encrypt(buffer));
+				outputFile.writeBytes(encrypted.getBytes());
+			} else {
+				throw new NoSuchFileException(inputFile.getOriginalFilename());
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				inputFile.close();
-				outputFile.close();
+				outputFile.closeOutputStream();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

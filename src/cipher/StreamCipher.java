@@ -4,7 +4,7 @@ import file.FileHandler;
 
 public abstract class StreamCipher {
 
-	protected KeyStream keyStream;
+	KeyStream keyStream;
 
 	StreamCipher(KeyStream keyStream) {
 		this.keyStream = keyStream;
@@ -18,9 +18,9 @@ public abstract class StreamCipher {
 		return keyStream;
 	}
 
-	public abstract String crypt(String message);
+	public abstract String encrypt(String message);
 
-	public abstract void crypt(FileHandler inputFile, FileHandler outputFile);
+	public abstract void encrypt(FileHandler inputFile, FileHandler outputFile);
 
 	@Override
 	public String toString() {

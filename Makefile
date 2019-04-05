@@ -1,5 +1,5 @@
 JAVA_ARGS	:=
-MAIN		:= CryptoA51
+MAIN		:= A51CipherTest
 
 BIN			:= bin
 SRC			:= src
