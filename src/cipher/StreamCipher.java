@@ -4,29 +4,29 @@ import file.FileHandler;
 
 public abstract class StreamCipher {
 
-	KeyStream keyStream;
+    KeyStream keyStream;
 
-	StreamCipher(KeyStream keyStream) {
-		this.keyStream = keyStream;
-	}
+    StreamCipher(KeyStream keyStream) {
+        this.keyStream = keyStream;
+    }
 
-	public void initialize() {
-		this.keyStream.initialize();
-	}
+    public void initialize() {
+        this.keyStream.initialize();
+    }
 
-	public KeyStream getKeyStream() {
-		return keyStream;
-	}
+    public KeyStream getKeyStream() {
+        return keyStream;
+    }
 
-	public abstract String encrypt(String message);
+    public abstract String encrypt(String message);
 
-	public abstract void encrypt(FileHandler inputFile, FileHandler outputFile);
+    public abstract void encrypt(FileHandler inputFile, FileHandler outputFile);
 
-	@Override
-	public String toString() {
-		return "StreamCipher{" +
-				"keyStream=" + keyStream +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "StreamCipher{" +
+                "keyStream=" + keyStream +
+                '}';
+    }
 
 }
